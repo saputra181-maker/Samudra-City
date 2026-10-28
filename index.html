@@ -127,35 +127,25 @@
 }
 
 
-/* Tata letak profil lebih ringkas dan menyamping */
-#profile-panel { align-items: flex-start; gap: 18px; }
-#profile-panel > div:first-child {
-  flex: 1 1 680px;
-  min-width: 0;
-  display: grid;
-  grid-template-columns: minmax(250px, 320px) minmax(220px, 1fr);
-  grid-template-rows: auto auto auto auto auto;
-  align-items: start;
-  column-gap: 20px;
-  row-gap: 8px;
-}
-#profile-panel > div:first-child > span { grid-column: 1 / -1; }
-#resident-avatar { grid-column: 2; grid-row: 2; width: 82px; height: 82px; font-size: 44px; margin: 0 0 8px; }
-#avatar-customizer { grid-column: 1; grid-row: 2 / span 5; margin-top: 0; padding: 14px; }
-#profile-name { grid-column: 2; grid-row: 3; align-self: end; }
-#profile-email { grid-column: 2; grid-row: 4; overflow-wrap: anywhere; }
-#profile-id { grid-column: 2; grid-row: 5; overflow-wrap: anywhere; }
-#profile-username { grid-column: 2; grid-row: 6; overflow-wrap: anywhere; }
-#profile-panel > .profile-actions { flex: 0 0 auto; align-self: center; }
-@media (max-width: 720px) {
-  #profile-panel { display: flex; flex-direction: column; }
-  #profile-panel > div:first-child { width: 100%; grid-template-columns: minmax(0, 1fr); }
-  #profile-panel > div:first-child > span,
-  #resident-avatar, #avatar-customizer, #profile-name, #profile-email, #profile-id, #profile-username { grid-column: 1; grid-row: auto; }
-  #resident-avatar { margin-top: 4px; }
-  #profile-panel > .profile-actions { align-self: flex-start; }
-}
-
+/* Profil penduduk dirapikan: identitas menyatu, username terlihat, ruang kosong dikurangi */
+#profile-panel{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:16px 20px;padding:20px;background:linear-gradient(135deg,#ffffff0b,#ffffff04);border:1px solid #ffffff20;border-radius:16px}
+#profile-panel>div:first-child{min-width:0;display:grid;grid-template-columns:92px minmax(0,1fr);grid-template-rows:auto auto auto auto auto auto;align-items:center;column-gap:16px;row-gap:8px}
+#profile-panel>div:first-child>span{grid-column:1/-1;margin-bottom:2px}
+#resident-avatar{grid-column:1;grid-row:2/span 4;width:88px;height:88px;font-size:46px;margin:0;border-radius:22px;align-self:start}
+#profile-name{grid-column:2;grid-row:2;align-self:end;font-size:clamp(18px,2vw,24px);line-height:1.25;margin:0!important;overflow-wrap:anywhere}
+#profile-username{grid-column:2;grid-row:3;margin:0;color:#82f0df;font-size:13px;font-weight:700;overflow-wrap:anywhere;display:inline-flex;width:max-content;max-width:100%;padding:5px 9px;border-radius:999px;background:#82f0df14;border:1px solid #82f0df35}
+#profile-email{grid-column:2;grid-row:4;margin:0;overflow-wrap:anywhere;padding:8px 10px;border:1px solid #ffffff12;background:#ffffff08;border-radius:9px}
+#profile-id{grid-column:2;grid-row:5;margin:0;font-size:11px;overflow-wrap:anywhere;padding:8px 10px;border:1px solid #ffffff12;background:#ffffff08;border-radius:9px}
+#avatar-customizer{grid-column:1/-1;grid-row:6;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:10px 12px;margin-top:8px;padding:16px}
+#avatar-customizer h3,#avatar-customizer>p.form-note:first-of-type{grid-column:1/-1}
+#avatar-customizer label{display:flex;flex-direction:column;gap:7px}
+#avatar-customizer select{min-width:0}
+#avatar-customizer .avatar-preview{grid-column:1;width:64px;height:64px;font-size:34px;margin:0}
+#avatar-customizer #save-avatar-button,#avatar-message{grid-column:2/-1}
+#profile-panel>.profile-actions{display:flex;flex-direction:column;align-items:stretch;gap:8px;align-self:start;padding-top:22px}
+#profile-panel>.profile-actions button{white-space:nowrap}
+@media(max-width:720px){#profile-panel{grid-template-columns:minmax(0,1fr);padding:14px}#profile-panel>div:first-child{width:100%;grid-template-columns:76px minmax(0,1fr);column-gap:12px}#resident-avatar{width:72px;height:72px;font-size:38px}#profile-panel>.profile-actions{flex-direction:row;flex-wrap:wrap;padding-top:0}#avatar-customizer{grid-template-columns:minmax(0,1fr)}#avatar-customizer h3,#avatar-customizer>p.form-note:first-of-type,#avatar-customizer .avatar-preview,#avatar-customizer #save-avatar-button,#avatar-message,#avatar-customizer label{grid-column:1}}
+@media(max-width:420px){#profile-panel>div:first-child{grid-template-columns:64px minmax(0,1fr);column-gap:10px}#resident-avatar{width:60px;height:60px;font-size:32px;border-radius:16px}#profile-name{font-size:17px}#profile-email,#profile-id{font-size:10px}}
 </style></head><body>
 <header><div><b>≈ SAMUDRA CITY</b><small>DUNIA PULAU VIRTUAL</small></div><div><button onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">Peta</button> <button onclick="document.getElementById('resident-account').scrollIntoView({behavior:'smooth'})">Akun Penduduk</button></div></header>
 <main><section class="hero"><div><div class="kicker">✦ DUNIA BARU MENANTI</div><h1>Lautan luas.<br>Pulau penuh cerita.</h1><p>Jelajahi kota virtual mungil di tengah samudra biru. Temukan permukiman, pulau tropis, mercusuar, dan pelabuhan dalam peta interaktif.</p></div></section>
