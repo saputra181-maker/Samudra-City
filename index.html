@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#06233b"><title>Samudra City</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#061b30;color:#e9fbff;font-family:system-ui,sans-serif}header{padding:18px 5%;background:#041629;border-bottom:1px solid #ffffff22;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}header b{letter-spacing:1px}header small{display:block;color:#82dccc;font-size:9px;letter-spacing:2px}button{cursor:pointer;border:1px solid #ffffff30;background:#ffffff10;color:#efffff;border-radius:10px;padding:9px 12px}main{max-width:1300px;margin:auto;padding:28px 3%}.hero{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:20px}.hero h1{font-size:clamp(30px,4vw,50px);line-height:1;margin:10px 0}.hero p{color:#aacbd8;line-height:1.6;max-width:600px}.kicker{color:#82f0df;font-size:11px;letter-spacing:2px;font-weight:800}.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:14px}.map{height:min(68vh,680px);min-height:420px;position:relative;overflow:hidden;border-radius:22px;border:1px solid #82f0df55;background:radial-gradient(ellipse at 50% 45%,#0b91ad,#08719b 40%,#06476b 72%,#032541)}.map:before{content:"";position:absolute;inset:-20%;background:repeating-radial-gradient(ellipse at center,transparent 0 42px,#a5fff022 43px 44px,transparent 45px 85px);animation:sea 55s linear infinite}@keyframes sea{to{transform:rotate(360deg)}}svg{position:absolute;width:100%;height:100%;inset:0}.controls{position:absolute;top:12px;left:12px;display:flex;gap:5px}.caption{position:absolute;bottom:12px;left:12px;background:#05283fe8;padding:10px 12px;border-radius:10px;font-size:12px}.caption small{display:block;color:#a9cbd8}.label{position:absolute;color:#bffff0a0;letter-spacing:3px;font-size:10px;transform:rotate(-18deg)}.l1{top:30%;left:7%}.l2{top:48%;right:7%}.l3{bottom:17%;left:14%}.panel{display:flex;flex-direction:column;gap:12px}.card{padding:16px;border:1px solid #ffffff20;border-radius:16px;background:linear-gradient(145deg,#103951,#08253d)}.card h2{font-size:13px;margin:0 0 12px}.search{display:flex;gap:6px}.search input{width:100%;min-width:0;background:#041b2d;color:white;border:1px solid #4e91a5;border-radius:9px;padding:10px}.primary{background:#82f0df;color:#063047;border:0;font-weight:800}.person{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:11px}.avatar{font-size:23px;background:#e6a58c;border-radius:10px;padding:7px}.person small{display:block;color:#a9cbd8;margin-top:3px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat{background:#ffffff09;border:1px solid #ffffff12;border-radius:10px;padding:10px}.stat b{display:block;font-size:22px}.stat small{font-size:10px;color:#a9cbd8}.item{padding:9px 0;border-bottom:1px solid #ffffff15;font-size:11px}.item:last-child{border:0}.item small{display:block;color:#a9cbd8;margin-top:3px}.extras{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.extra{padding:16px;border:1px solid #ffffff20;border-radius:15px;background:#0b2b42}.extra h2{font-size:13px;margin:0 0 8px}.extra p{font-size:11px;color:#a9cbd8;line-height:1.6;margin:0}footer{padding:22px 0;color:#7ba8bb;font-size:10px;display:flex;justify-content:space-between;flex-wrap:wrap}#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#d9fff7;color:#063047;padding:10px 15px;border-radius:10px;display:none;font-size:12px;font-weight:bold;max-width:90%}#toast.show{display:block}@media(max-width:850px){.layout{grid-template-columns:1fr}.hero{display:block}.panel{display:grid;grid-template-columns:1fr 1fr}.panel .card:first-child,.panel .card:last-child{grid-column:1/-1}.extras{grid-template-columns:1fr 1fr}.extras .extra:last-child{grid-column:1/-1}}@media(max-width:520px){header{padding:14px}.hero h1{font-size:34px}.map{min-height:370px;height:52vh}.panel,.extras{display:grid;grid-template-columns:1fr}.panel .card:first-child,.panel .card:last-child,.extras .extra:last-child{grid-column:auto}.label{font-size:8px}}
+
+.account-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.status-pill{border:1px solid #82f0df66;background:#82f0df12;color:#bffff0;border-radius:999px;padding:8px 12px;font-size:12px}.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.auth-form{border:1px solid #ffffff20;border-radius:13px;padding:14px;display:flex;flex-direction:column;gap:10px;background:#041d30}.auth-form h3{margin:0 0 4px;font-size:15px}.auth-form label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:#c5e4ed}.auth-form input{width:100%;background:#061b30;color:white;border:1px solid #4e91a5;border-radius:9px;padding:11px;font:inherit}.auth-form button{margin-top:3px}.form-note{font-size:11px;color:#aacbd8;line-height:1.5;margin:0}.auth-message{font-size:12px;color:#bffff0;margin:14px 0 0;line-height:1.5}.profile-panel{margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#ffffff09;border:1px solid #ffffff20;border-radius:12px;padding:14px}.profile-panel h3{font-size:18px}.profile-panel button{background:#ffffff12}.auth-form[hidden],.profile-panel[hidden]{display:none!important}
+@media(max-width:600px){.auth-grid{grid-template-columns:1fr}.account-head{align-items:flex-start}}
+  
+.password-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.password-wrap input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding-right: 48px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 19px;
+  padding: 6px;
+  line-height: 1;
+  color: inherit;
+}
+
+.toggle-password:focus-visible {
+  outline: 2px solid #2584ff;
+  border-radius: 6px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#edit-profile-form {
+  margin-top: 12px;
+}
+
+#edit-profile-form[hidden] {
+  display: none !important;
+}
+
+#edit-profile-form input:focus {
+  outline: 2px solid #82f0df;
+  outline-offset: 1px;
+}
+.resident-avatar {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  background: #10374b;
+  border: 2px solid #82f0df;
+  border-radius: 24px;
+  margin: 12px 0;
+  box-shadow: 0 8px 24px #0003;
+}
+
+.avatar-preview {
+  transition: background-color 0.2s ease;
+}
+  
+.avatar-customizer {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #ffffff20;
+  border-radius: 14px;
+  background: #041d30;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.avatar-customizer h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.avatar-customizer label {
+  color: #c5e4ed;
+  font-size: 12px;
+}
+
+.avatar-customizer select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #4e91a5;
+  border-radius: 9px;
+  background: #061b30;
+  color: white;
+  font: inherit;
+}
+
+.avatar-customizer button {
+  padding: 11px;
+  border: 0;
+  border-radius: 9px;
+  background: #82f0df;
+  color: #062536;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.avatar-customizer button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.avatar-preview {
+  margin: 4px 0 10px;
+}
+
+
+/* Profil penduduk dirapikan: identitas menyatu, username terlihat, ruang kosong dikurangi */
+#profile-panel{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:16px 20px;padding:20px;background:linear-gradient(135deg,#ffffff0b,#ffffff04);border:1px solid #ffffff20;border-radius:16px}
+#profile-panel>div:first-child{min-width:0;display:grid;grid-template-columns:92px minmax(0,1fr);grid-template-rows:auto auto auto auto auto auto;align-items:center;column-gap:16px;row-gap:8px}
+#profile-panel>div:first-child>span{grid-column:1/-1;margin-bottom:2px}
+#resident-avatar{grid-column:1;grid-row:2/span 4;width:88px;height:88px;font-size:46px;margin:0;border-radius:22px;align-self:start}
+#profile-name{grid-column:2;grid-row:2;align-self:end;font-size:clamp(18px,2vw,24px);line-height:1.25;margin:0!important;overflow-wrap:anywhere}
+#profile-username{grid-column:2;grid-row:3;margin:0;color:#82f0df;font-size:13px;font-weight:700;overflow-wrap:anywhere;display:inline-flex;width:max-content;max-width:100%;padding:5px 9px;border-radius:999px;background:#82f0df14;border:1px solid #82f0df35}
+#profile-email{grid-column:2;grid-row:4;margin:0;overflow-wrap:anywhere;padding:8px 10px;border:1px solid #ffffff12;background:#ffffff08;border-radius:9px}
+#profile-id{grid-column:2;grid-row:5;margin:0;font-size:11px;overflow-wrap:anywhere;padding:8px 10px;border:1px solid #ffffff12;background:#ffffff08;border-radius:9px}
+#avatar-customizer{grid-column:1/-1;grid-row:6;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto auto auto auto auto auto auto;align-items:end;gap:10px 12px;margin-top:8px;padding:16px}
+#avatar-customizer h3{grid-column:1/-1;grid-row:1}
+#avatar-customizer>p.form-note:first-of-type{grid-column:1/-1;grid-row:2;margin:0}
+#avatar-customizer label{display:block;color:#c5e4ed;font-size:12px;margin-bottom:7px}
+#avatar-customizer label[for="avatar-emoji"]{grid-column:1;grid-row:3}
+#avatar-customizer #avatar-emoji{grid-column:1;grid-row:4}
+#avatar-customizer label[for="avatar-color"]{grid-column:2;grid-row:3}
+#avatar-customizer #avatar-color{grid-column:2;grid-row:4}
+#avatar-customizer label[for="avatar-accessory"]{grid-column:3;grid-row:3}
+#avatar-customizer #avatar-accessory{grid-column:3;grid-row:4}
+#avatar-customizer select{min-width:0}
+#avatar-customizer>p.form-note:nth-of-type(2){grid-column:1;grid-row:5;margin:0}
+#avatar-customizer .avatar-preview{grid-column:1;grid-row:6;width:64px;height:64px;font-size:34px;margin:0}
+#avatar-customizer #save-avatar-button{grid-column:2/-1;grid-row:6}
+#avatar-customizer #avatar-message{grid-column:2/-1;grid-row:7;margin:0}
+#profile-panel>.profile-actions{display:flex;flex-direction:column;align-items:stretch;gap:8px;align-self:start;padding-top:22px}
+#profile-panel>.profile-actions button{white-space:nowrap}
+@media(max-width:720px){#profile-panel{grid-template-columns:minmax(0,1fr);padding:14px}#profile-panel>div:first-child{width:100%;grid-template-columns:76px minmax(0,1fr);column-gap:12px}#resident-avatar{width:72px;height:72px;font-size:38px}#profile-panel>.profile-actions{flex-direction:row;flex-wrap:wrap;padding-top:0}#avatar-customizer{grid-template-columns:minmax(0,1fr);grid-template-rows:auto}#avatar-customizer h3,#avatar-customizer>p.form-note:first-of-type,#avatar-customizer .avatar-preview,#avatar-customizer #save-avatar-button,#avatar-customizer #avatar-message,#avatar-customizer label,#avatar-customizer select,#avatar-customizer>p.form-note:nth-of-type(2){grid-column:1;grid-row:auto}}
+@media(max-width:420px){#profile-panel>div:first-child{grid-template-columns:64px minmax(0,1fr);column-gap:10px}#resident-avatar{width:60px;height:60px;font-size:32px;border-radius:16px}#profile-name{font-size:17px}#profile-email,#profile-id{font-size:10px}}
+
+a.nav-link{display:inline-block;text-decoration:none;cursor:pointer;border:1px solid #ffffff30;background:#ffffff10;color:#efffff;border-radius:10px;padding:9px 12px;font-size:13px}
+a.nav-link:hover{background:#ffffff1b}
+/* Pemisahan halaman Peta dan Akun Penduduk */
+body.city-page #resident-account{display:none!important}
+body.account-page .hero,body.account-page .layout,body.account-page .extras{display:none!important}
+body.account-page main{max-width:1000px;min-height:calc(100vh - 150px)}
+body.account-page #resident-account{margin:24px auto 18px!important}
+body.account-page .auth-grid{align-items:stretch}
+body.account-page .auth-form{min-height:100%}
+body.account-page footer{max-width:1000px;margin:auto;padding-left:3%;padding-right:3%}
+@media(max-width:600px){body.account-page main{padding:18px 4%}body.account-page #resident-account{margin-top:12px!important}}
+</style></head><body class="city-page">
+<header><div><b>≈ SAMUDRA CITY</b><small>DUNIA PULAU VIRTUAL</small></div><div><a class="nav-link" href="index.html#map">Peta</a> <a class="nav-link" href="akun.html">Akun Penduduk</a></div></header>
+<main><section class="hero"><div><div class="kicker">✦ DUNIA BARU MENANTI</div><h1>Lautan luas.<br>Pulau penuh cerita.</h1><p>Jelajahi kota virtual mungil di tengah samudra biru. Temukan permukiman, pulau tropis, mercusuar, dan pelabuhan dalam peta interaktif.</p></div></section>
+<section class="account card" id="resident-account" style="margin-bottom:16px">
+  <div class="account-head"><div><div class="kicker">IDENTITAS KEPENDUDUKAN</div><h2 style="font-size:20px;margin:6px 0">Akun Penduduk Samudra City</h2><p style="color:#aacbd8;margin:0;font-size:13px;line-height:1.5">Daftar atau masuk untuk membuat profil penduduk yang tersimpan di database.</p></div><div id="auth-status" class="status-pill">Belum masuk</div></div>
+  <div id="auth-forms" class="auth-grid">
+
+<form id="signup-form" class="auth-form">
+  <h3>🪪 Daftar penduduk</h3>
+
+  <label>Nama penduduk
+    <input id="signup-name" autocomplete="name"
+      maxlength="60" required
+      placeholder="Contoh: Nara Samudra">
+  </label>
+
+  <label>Email
+    <input id="signup-email" type="email"
+      autocomplete="email" required
+      placeholder="nama@email.com">
+  </label>
+
+  <label>Password
+    <span class="password-wrap">
+      <input id="signup-password" type="password"
+        autocomplete="new-password" minlength="8"
+        required placeholder="Minimal 8 karakter">
+      <button class="toggle-password" type="button"
+        aria-label="Lihat password"
+        aria-pressed="false"
+        onclick="togglePassword('signup-password', this)">👁️</button>
+    </span>
+  </label>
+
+  <button class="primary" type="submit">Buat akun</button>
+  <p class="form-note">
+    Jika konfirmasi email aktif, cek kotak masuk email setelah mendaftar.
+  </p>
+</form>
+
+<form id="login-form" class="auth-form">
+  <h3>🔐 Login penduduk</h3>
+
+  <label>Email
+    <input id="login-email" type="email"
+      autocomplete="email" required
+      placeholder="nama@email.com">
+  </label>
+
+  <label>Password
+    <span class="password-wrap">
+      <input id="login-password" type="password"
+        autocomplete="current-password" required
+        placeholder="Password akun">
+      <button class="toggle-password" type="button"
+        aria-label="Lihat password"
+        aria-pressed="false"
+        onclick="togglePassword('login-password', this)">👁️</button>
+    </span>
+  </label>
+
+  <button class="primary" type="submit">Masuk</button>
+  <p class="form-note">
+    Gunakan email dan password yang didaftarkan.
+  </p>
+</form>
+  </div>
+
+<div id="profile-panel" hidden class="profile-panel">
+  <div>
+    <span style="color:#82f0df;font-size:11px;letter-spacing:1px">
+      PROFIL PENDUDUK
+    </span>
+<div id="resident-avatar"
+     class="resident-avatar"
+     aria-label="Avatar penduduk">
+  🧑🏻‍🚀
+</div>
+
+<div id="avatar-customizer" class="avatar-customizer">
+  <h3>🎨 Kustomisasi Karakter</h3>
+  <p class="form-note">Buat karakter khasmu sebagai warga Samudra City.</p>
+
+  <label for="avatar-emoji">Pilih karakter</label>
+  <select id="avatar-emoji">
+    <option value="🧑🏻‍🚀">Astronaut</option>
+    <option value="🧑🏻‍🎨">Seniman pulau</option>
+    <option value="🧑🏽‍🚣">Penjelajah laut</option>
+    <option value="🧑🏻‍✈️">Kapten kapal</option>
+    <option value="🧑🏽‍🔬">Ilmuwan laut</option>
+    <option value="🧑🏻‍🌾">Petani pulau</option>
+    <option value="🧑🏽‍💻">Teknisi kota</option>
+    <option value="🧑🏻‍🎤">Musisi kota</option>
+  </select>
+
+  <label for="avatar-color">Pilih warna latar</label>
+  <select id="avatar-color">
+    <option value="#10374b">Biru samudra</option>
+    <option value="#245747">Hijau pulau</option>
+    <option value="#70452f">Cokelat pasir</option>
+    <option value="#633b78">Ungu senja</option>
+    <option value="#873e58">Merah karang</option>
+    <option value="#34415e">Biru malam</option>
+  </select>
+
+  <label for="avatar-accessory">Pilih aksesori</label>
+  <select id="avatar-accessory">
+    <option value="none">Tanpa aksesori</option>
+    <option value="🕶️">Kacamata hitam</option>
+    <option value="🧢">Topi</option>
+    <option value="👑">Mahkota</option>
+    <option value="🎧">Headphone</option>
+    <option value="🌺">Bunga tropis</option>
+    <option value="⚓">Jangkar</option>
+  </select>
+
+  <p class="form-note">Pratinjau:</p>
+  <div id="avatar-preview" class="resident-avatar avatar-preview">
+    🧑🏻‍🚀
+  </div>
+
+  <button type="button" id="save-avatar-button" class="primary">
+    💾 Simpan Avatar
+  </button>
+  <p id="avatar-message" class="form-note" role="status"></p>
+</div>
+
+    <h3 id="profile-name" style="margin:5px 0">Penduduk</h3>
+    <p id="profile-email" class="form-note"></p>
+    <p id="profile-id" class="form-note"></p>
+    <p id="profile-username" class="form-note"></p>
+  </div>
+
+  <div class="profile-actions">
+    <button id="edit-profile-button" type="button">
+      ✏️ Edit Profil
+    </button>
+
+    <button id="logout-button" type="button">
+      Keluar
+    </button>
+  </div>
+</div>
+
+  <form id="edit-profile-form" class="auth-form" hidden>
+  <h3>✏️ Edit Profil Penduduk</h3>
+
+  <label>
+    Nama penduduk
+    <input
+      id="edit-profile-name"
+      type="text"
+      maxlength="60"
+      required
+      placeholder="Nama penduduk"
+    >
+  </label>
+
+  <label>
+    Username
+    <input
+      id="edit-profile-username"
+      type="text"
+      minlength="3"
+      maxlength="20"
+      pattern="[A-Za-z0-9_.-]{3,20}"
+      required
+      placeholder="contoh: saputra181"
+    >
+  </label>
+
+  <p class="form-note">
+    Username hanya boleh berisi huruf, angka, titik, garis bawah, atau tanda hubung.
+  </p>
+
+  <div class="profile-actions">
+    <button type="button" id="cancel-edit-profile">Batal</button>
+    <button type="submit" class="primary">Simpan Perubahan</button>
+  </div>
+</form>
+
+  <p id="auth-message" role="status" aria-live="polite" class="auth-message">Sistem akun terhubung ke Supabase setelah kunci publik dipasang.</p>
+</section>
+<section class="layout"><div class="map" id="map"><span class="label l1">SAMUDRA BIRU</span><span class="label l2">LAUT LEPAS</span><span class="label l3">PERAIRAN SELATAN</span><div class="controls"><button onclick="zoom(1.15)">＋</button><button onclick="zoom(.87)">−</button><button onclick="reset()">⌂</button></div>
+<svg viewBox="0 0 900 620" aria-label="Ilustrasi pulau"><g id="world">
+<g onclick="toast('Pulau Samudra: pusat kota, taman, rumah dan pelabuhan.')" style="cursor:pointer"><path d="M215 292L355 207Q386 190 417 205L620 315Q647 330 623 348L455 447Q430 462 402 447L215 340Q190 325 215 292Z" fill="#e8ce8c" stroke="#fff0bd" stroke-width="3"/><path d="M232 292L360 218Q387 202 412 214L600 319Q622 331 601 345L452 431Q429 444 407 431L232 331Q212 319 232 292Z" fill="#9bd29a"/><path d="M252 292L348 237L393 263L298 318Z" fill="#6ab97f"/><g fill="#367d5d"><circle cx="288" cy="279" r="11"/><circle cx="318" cy="260" r="9"/><circle cx="344" cy="276" r="11"/><circle cx="314" cy="296" r="9"/></g><path d="M242 312L359 244L573 363L449 432L242 312" fill="none" stroke="#fff0ce" stroke-width="11"/><g transform="translate(367 280)"><path d="M0 15L25 0L50 15L25 30Z" fill="#f3e5c3"/><path d="M0 15L25 30V57L0 42Z" fill="#e9a174"/><path d="M25 30L50 15V42L25 57Z" fill="#c96f5b"/></g><g transform="translate(428 319)"><path d="M0 15L24 1L48 15L24 30Z" fill="#e5ece8"/><path d="M0 15L24 30V64L0 49Z" fill="#91a9c2"/><path d="M24 30L48 15V49L24 64Z" fill="#61799b"/></g><g transform="translate(304 319)"><path d="M0 12L22 0L44 12L22 25Z" fill="#dc6e5b"/><path d="M0 12L22 25V48L0 35Z" fill="#d89564"/><path d="M22 25L44 12V35L22 48Z" fill="#b76e50"/></g><g transform="translate(555 301)"><path d="M8 12H22L20 42H10Z" fill="#f7f0d8"/><path d="M8 12L15 17V42H10Z" fill="#dc6257"/><path d="M6 12L15 5L24 12L15 18Z" fill="#f5d06e"/></g><text x="282" y="334" font-size="10" font-weight="900" fill="#1b5551" transform="rotate(29 282 334)">TAMAN ANGIN</text><text x="410" y="277" font-size="10" font-weight="900" fill="#1b5551" transform="rotate(29 410 277)">PUSAT KOTA</text><text x="476" y="411" font-size="10" font-weight="900" fill="#1b5551" transform="rotate(29 476 411)">PELABUHAN</text></g>
+<g onclick="toast('Pulau Kelapa: pulau tropis kecil.')" style="cursor:pointer"><path d="M715 154Q738 136 763 149L799 169Q812 180 792 192L761 211Q744 218 726 205L704 188Q696 174 715 154Z" fill="#f1d99a" stroke="#fff0bd" stroke-width="2"/><path d="M720 155Q740 141 761 152L789 170L758 201L728 196L711 182Z" fill="#81c98e"/><g fill="#347c5e"><circle cx="737" cy="166" r="9"/><circle cx="758" cy="159" r="8"/><circle cx="769" cy="176" r="8"/></g><text x="713" y="229" font-size="10" font-weight="900" fill="#164c4c">PULAU KELAPA</text></g>
+<g onclick="toast('Karang Lentera: mercusuar kecil.')" style="cursor:pointer"><path d="M128 454Q148 435 169 448L194 462Q204 472 187 484L160 499Q145 503 130 490L115 475Q111 464 128 454Z" fill="#f1d99a" stroke="#fff0bd" stroke-width="2"/><path d="M153 463H166L164 485H155Z" fill="#f6f0d8"/><path d="M153 463L160 468V485H155Z" fill="#d75f55"/><text x="112" y="516" font-size="9" font-weight="900" fill="#164c4c">KARANG LENTERA</text></g>
+<g onclick="toast('Atol Selatan: gugusan pasir dan karang.')" style="cursor:pointer"><path d="M655 489Q680 470 706 484L739 502Q750 512 729 524L696 543Q677 548 656 534L638 516Q632 502 655 489Z" fill="#f1d99a" stroke="#fff0bd" stroke-width="2"/><path d="M659 490Q680 477 703 488L731 504L696 535L660 522L646 508Z" fill="#72c38e"/><text x="649" y="560" font-size="10" font-weight="900" fill="#164c4c">ATOL SELATAN</text></g></g></svg>
+<div class="caption"><b>🏝️ Kepulauan Samudra</b><small>1 pulau utama · 3 daratan kecil · lautan luas</small></div></div>
+<aside class="panel"><div class="card"><h2>🔎 Cari warga · DEMO</h2><form class="search" id="search"><input id="query" placeholder="@nama_warga"><button class="primary">Cari</button></form><div class="person" id="result"><div class="avatar">🧑🏻‍🎨</div><div><b>@nara.samudra</b><small>Arsitek pulau · Pusat Kota</small></div></div></div>
+<div class="card"><h2>🌐 Statistik dunia</h2><div class="stats"><div class="stat"><b>248</b><small>Warga contoh</small></div><div class="stat"><b>06</b><small>Distrik kota</small></div><div class="stat"><b>04</b><small>Pulau & atol</small></div><div class="stat"><b>85%</b><small>Area lautan</small></div></div></div>
+<div class="card"><h2>🧭 Tempat menarik</h2><div class="item">🏘️ Pusat Kota<small>Rumah dan kehidupan warga</small></div><div class="item">⚓ Pelabuhan Senja<small>Pintu masuk pulau utama</small></div><div class="item">🌴 Pulau Kelapa<small>Pulau tropis kecil</small></div></div>
+<div class="card"><h2>📰 Koran Samudra</h2><div class="item"><b>Walikota:</b> Dermaga baru sedang direncanakan.</div><div class="item"><b>Agenda:</b> Festival lampion di pelabuhan.</div><div class="item"><b>Lingkungan:</b> Mari jaga pantai tetap bersih.</div></div></aside></section>
+<section class="extras"><div class="extra"><h2>📻 Radio Samudra</h2><p>Tombol radio hanya simulasi, belum memutar audio sungguhan.</p><p style="margin-top:10px"><button id="radio">▶ Putar / jeda</button></p></div><div class="extra"><h2>🏛️ Pengumuman walikota</h2><p>“Pulau yang nyaman dibangun dari kebiasaan baik. Mari rawat pantai dan laut bersama.”</p></div><div class="extra"><h2>🛠️ Tentang demo</h2><p>Peta kota virtual dan akun penduduk terhubung ke Supabase setelah Publishable key dipasang.</p></div></section>
+<footer><span>© 2026 Samudra City · Dunia pulau virtual</span><span>Versi awal · Bisa dikembangkan lebih lanjut</span></footer></main><div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+
+let z=1;const world=document.getElementById('world');function zoom(f){z=Math.max(.65,Math.min(1.8,z*f));world.setAttribute('transform',`translate(450 310) scale(${z}) translate(-450 -310)`)}function reset(){z=1;world.removeAttribute('transform');toast('Peta diatur ulang')}let timer;function toast(s){let e=document.getElementById('toast');e.textContent=s;e.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>e.classList.remove('show'),2300)}document.getElementById('search').addEventListener('submit',e=>{e.preventDefault();let q=document.getElementById('query').value.trim().replace(/^@/,'').toLowerCase(),r=document.getElementById('result');let people=[['nara.samudra','Nara Samudra','Arsitek pulau','🧑🏻‍🎨'],['lautbiru','Laut Biru','Penjelajah pulau','🧑🏽‍🚣'],['kapten.ara','Kapten Ara','Nelayan','🧑🏻‍✈️']];let p=people.find(x=>x[0].includes(q)||x[1].toLowerCase().includes(q));if(!q){toast('Masukkan nama warga');return}if(p){r.innerHTML=`<div class="avatar">${p[3]}</div><div><b>@${p[0]}</b><small>${p[2]} · Samudra City</small></div>`;toast('Warga ditemukan di data contoh')}else{r.innerHTML='<div class="avatar">🔎</div><div><b>Warga belum ditemukan</b><small>Data ini tidak ada dalam demo</small></div>';toast('Coba nara.samudra, lautbiru, atau kapten.ara')}});let play=false;document.getElementById('radio').onclick=()=>{play=!play;toast(play?'Simulasi radio aktif':'Radio dijeda')};
+
+// === AKUN PENDUDUK SUPABASE ===
+// Ganti nilai placeholder di bawah dengan Publishable key dari Supabase.
+const SUPABASE_URL = 'https://kxttgvscisghrkrnmurh.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_QgZYjQKMWy06xgs8NYHd2Q_tecUgJR_';
+const authMessage = document.getElementById('auth-message');
+const authStatus = document.getElementById('auth-status');
+const authForms = document.getElementById('auth-forms');
+const profilePanel = document.getElementById('profile-panel');
+let supabaseClient = null;
+let currentResidentSession = null;
+function showAuthMessage(message, isError=false){authMessage.textContent=message;authMessage.style.color=isError?'#ffb4a8':'#bffff0';}
+function setBusy(form,busy){form.querySelectorAll('button').forEach(b=>{b.disabled=busy;b.style.opacity=busy?'.65':'1';});}
+function showSignedOut(){currentResidentSession=null;authStatus.textContent='Belum masuk';authForms.hidden=false;profilePanel.hidden=true;document.getElementById('edit-profile-form').hidden=true;}
+
+async function refreshResident(session) {
+  if (!session) {
+    currentResidentSession = null;
+    showSignedOut();
+    return;
+  }
+
+  currentResidentSession = session;
+  authStatus.textContent = 'Sudah masuk';
+  authForms.hidden = true;
+  profilePanel.hidden = false;
+
+  document.getElementById('profile-email').textContent = session.user.email || '';
+  document.getElementById('profile-id').textContent = 'ID Penduduk: ' + session.user.id;
+
+  const { data, error } = await supabaseClient
+    .from('profiles')
+    .select('display_name, username, avatar_emoji, avatar_color, avatar_accessory')
+    .eq('id', session.user.id)
+    .maybeSingle();
+
+  if (error) {
+    showAuthMessage('Profil gagal dibaca: ' + error.message, true);
+    return;
+  }
+
+  const avatarEmoji = data?.avatar_emoji || '🧑🏻‍🚀';
+  const avatarColor = data?.avatar_color || '#10374b';
+  const avatarAccessory = data?.avatar_accessory || 'none';
+  const avatarText = avatarEmoji + (avatarAccessory === 'none' ? '' : avatarAccessory);
+
+  const residentAvatar = document.getElementById('resident-avatar');
+  residentAvatar.textContent = avatarText;
+  residentAvatar.style.backgroundColor = avatarColor;
+
+  document.getElementById('avatar-emoji').value = avatarEmoji;
+  document.getElementById('avatar-color').value = avatarColor;
+  document.getElementById('avatar-accessory').value = avatarAccessory;
+  updateAvatarPreview();
+
+  const name = data?.display_name || session.user.user_metadata?.display_name || 'Penduduk Baru';
+  document.getElementById('profile-name').textContent = name;
+  document.getElementById('profile-username').textContent = data?.username ? '@' + data.username : 'Username belum diatur';
+  document.getElementById('edit-profile-name').value = name;
+  document.getElementById('edit-profile-username').value = data?.username || '';
+
+  showAuthMessage('Selamat datang di Samudra City!');
+}
+
+function updateAvatarPreview() {
+  const emoji = document.getElementById('avatar-emoji').value;
+  const color = document.getElementById('avatar-color').value;
+  const accessory = document.getElementById('avatar-accessory').value;
+
+  const preview = document.getElementById('avatar-preview');
+  preview.textContent =
+    emoji + (accessory === 'none' ? '' : accessory);
+  preview.style.backgroundColor = color;
+}
+
+['avatar-emoji', 'avatar-color', 'avatar-accessory'].forEach(id => {
+  document.getElementById(id).addEventListener('change', updateAvatarPreview);
+});
+
+document.getElementById('save-avatar-button')
+  .addEventListener('click', async () => {
+    const session = currentResidentSession;
+    const message = document.getElementById('avatar-message');
+    const button = document.getElementById('save-avatar-button');
+
+    if (!session) {
+      message.textContent = 'Login terlebih dahulu untuk menyimpan avatar.';
+      return;
+    }
+
+    const avatarEmoji = document.getElementById('avatar-emoji').value;
+    const avatarColor = document.getElementById('avatar-color').value;
+    const avatarAccessory =
+      document.getElementById('avatar-accessory').value;
+
+    button.disabled = true;
+    message.textContent = 'Menyimpan avatar...';
+
+    try {
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .update({
+          avatar_emoji: avatarEmoji,
+          avatar_color: avatarColor,
+          avatar_accessory: avatarAccessory
+        })
+        .eq('id', session.user.id)
+        .select('id')
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (!data) {
+        throw new Error(
+          'Profil tidak ditemukan atau izin update RLS belum benar.'
+        );
+      }
+
+      const residentAvatar = document.getElementById('resident-avatar');
+      residentAvatar.textContent =
+        avatarEmoji + (avatarAccessory === 'none' ? '' : avatarAccessory);
+      residentAvatar.style.backgroundColor = avatarColor;
+
+      message.textContent = 'Avatar berhasil disimpan!';
+    } catch (error) {
+      message.textContent = 'Gagal menyimpan: ' + error.message;
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+if(!window.supabase){showAuthMessage('Library koneksi belum termuat. Periksa koneksi internet lalu muat ulang halaman.',true);}
+else if(SUPABASE_PUBLISHABLE_KEY==='PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE'){
+  showAuthMessage('Belum terhubung: buka file index.html dan ganti PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE dengan Publishable key Supabase milikmu.');
+}else{
+  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+  
+document.getElementById('edit-profile-button')
+  .addEventListener('click', () => {
+    if (!currentResidentSession) return;
+
+    document.getElementById('edit-profile-form').hidden = false;
+  });
+
+document.getElementById('cancel-edit-profile')
+  .addEventListener('click', () => {
+    document.getElementById('edit-profile-form').hidden = true;
+  });
+
+document.getElementById('edit-profile-form')
+  .addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const session = currentResidentSession;
+    if (!session) return;
+
+    const name = document.getElementById('edit-profile-name')
+      .value.trim();
+
+    const username = document.getElementById('edit-profile-username')
+      .value.trim().toLowerCase();
+
+    if (!name || !/^[a-z0-9_.-]{3,20}$/.test(username)) {
+      showAuthMessage(
+        'Nama wajib diisi. Username harus 3–20 karakter: huruf, angka, titik, _ atau -.',
+        true
+      );
+      return;
+    }
+
+    const form = document.getElementById('edit-profile-form');
+    const saveButton = form.querySelector('button[type="submit"]');
+    saveButton.disabled = true;
+    saveButton.textContent = 'Menyimpan...';
+
+    try {
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .update({
+          display_name: name,
+          username: username
+        })
+        .eq('id', session.user.id)
+        .select('id')
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!data) {
+        throw new Error(
+          'Profil tidak ditemukan atau akses ditolak oleh aturan RLS.'
+        );
+      }
+
+      await refreshResident(session);
+      form.hidden = true;
+      showAuthMessage('Profil berhasil disimpan!');
+
+    } catch (error) {
+      showAuthMessage(
+        error.code === '23505'
+          ? 'Username sudah digunakan. Silakan pilih yang lain.'
+          : 'Gagal menyimpan profil: ' + error.message,
+        true
+      );
+    } finally {
+      saveButton.disabled = false;
+      saveButton.textContent = 'Simpan Perubahan';
+    }
+  });
+
+  document.getElementById('signup-form').addEventListener('submit',async e=>{
+    e.preventDefault();const form=e.currentTarget;setBusy(form,true);
+    const display_name=document.getElementById('signup-name').value.trim();const email=document.getElementById('signup-email').value.trim();const password=document.getElementById('signup-password').value;
+    const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{display_name},emailRedirectTo:location.origin+location.pathname}});
+    setBusy(form,false);
+    if(error){showAuthMessage('Pendaftaran gagal: '+error.message,true);return;}
+    if(data.session){await refreshResident(data.session);showAuthMessage('Akun berhasil dibuat. Selamat datang, '+display_name+'!');}
+    else{showAuthMessage('Pendaftaran diterima. Buka email untuk konfirmasi, lalu kembali ke website dan login.');form.reset();}
+  });
+  document.getElementById('login-form').addEventListener('submit',async e=>{
+    e.preventDefault();const form=e.currentTarget;setBusy(form,true);
+    const email=document.getElementById('login-email').value.trim();const password=document.getElementById('login-password').value;
+    const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});setBusy(form,false);
+    if(error){showAuthMessage('Login gagal: '+error.message,true);return;}
+    await refreshResident(data.session);
+  });
+  document.getElementById('logout-button').addEventListener('click',async()=>{const {error}=await supabaseClient.auth.signOut();if(error){showAuthMessage('Gagal keluar: '+error.message,true);return;}showSignedOut();showAuthMessage('Kamu sudah keluar dari akun Samudra City.');});
+  supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session)refreshResident(session);else showSignedOut();});
+  supabaseClient.auth.getSession().then(({data})=>refreshResident(data.session));
+}
+  function togglePassword(inputId, button) {
+  const input = document.getElementById(inputId);
+
+  if (!input) {
+    console.error("Input password tidak ditemukan:", inputId);
+    return;
+  }
+
+  const showPassword = input.type === "password";
+  input.type = showPassword ? "text" : "password";
+
+  button.textContent = showPassword ? "🙈" : "👁️";
+  button.setAttribute(
+    "aria-label",
+    showPassword ? "Sembunyikan password" : "Lihat password"
+  );
+  button.setAttribute("aria-pressed", String(showPassword));
+}
+</script></body></html>
