@@ -124,19 +124,6 @@
 <footer><span>© 2026 Samudra City · Dunia pulau virtual</span><span>Versi awal · Bisa dikembangkan lebih lanjut</span></footer></main><div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  
-function togglePassword(inputId, button) {
-  const input = document.getElementById(inputId);
-  const showPassword = input.type === "password";
-
-  input.type = showPassword ? "text" : "password";
-  button.textContent = showPassword ? "🙈" : "👁️";
-  button.setAttribute(
-    "aria-label",
-    showPassword ? "Sembunyikan password" : "Lihat password"
-  );
-  button.setAttribute("aria-pressed", String(showPassword));
-}
 
 let z=1;const world=document.getElementById('world');function zoom(f){z=Math.max(.65,Math.min(1.8,z*f));world.setAttribute('transform',`translate(450 310) scale(${z}) translate(-450 -310)`)}function reset(){z=1;world.removeAttribute('transform');toast('Peta diatur ulang')}let timer;function toast(s){let e=document.getElementById('toast');e.textContent=s;e.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>e.classList.remove('show'),2300)}document.getElementById('search').addEventListener('submit',e=>{e.preventDefault();let q=document.getElementById('query').value.trim().replace(/^@/,'').toLowerCase(),r=document.getElementById('result');let people=[['nara.samudra','Nara Samudra','Arsitek pulau','🧑🏻‍🎨'],['lautbiru','Laut Biru','Penjelajah pulau','🧑🏽‍🚣'],['kapten.ara','Kapten Ara','Nelayan','🧑🏻‍✈️']];let p=people.find(x=>x[0].includes(q)||x[1].toLowerCase().includes(q));if(!q){toast('Masukkan nama warga');return}if(p){r.innerHTML=`<div class="avatar">${p[3]}</div><div><b>@${p[0]}</b><small>${p[2]} · Samudra City</small></div>`;toast('Warga ditemukan di data contoh')}else{r.innerHTML='<div class="avatar">🔎</div><div><b>Warga belum ditemukan</b><small>Data ini tidak ada dalam demo</small></div>';toast('Coba nara.samudra, lautbiru, atau kapten.ara')}});let play=false;document.getElementById('radio').onclick=()=>{play=!play;toast(play?'Simulasi radio aktif':'Radio dijeda')};
 
@@ -186,5 +173,23 @@ else if(SUPABASE_PUBLISHABLE_KEY==='PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE'){
   document.getElementById('logout-button').addEventListener('click',async()=>{const {error}=await supabaseClient.auth.signOut();if(error){showAuthMessage('Gagal keluar: '+error.message,true);return;}showSignedOut();showAuthMessage('Kamu sudah keluar dari akun Samudra City.');});
   supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session)refreshResident(session);else showSignedOut();});
   supabaseClient.auth.getSession().then(({data})=>refreshResident(data.session));
+}
+  function togglePassword(inputId, button) {
+  const input = document.getElementById(inputId);
+
+  if (!input) {
+    console.error("Input password tidak ditemukan:", inputId);
+    return;
+  }
+
+  const showPassword = input.type === "password";
+  input.type = showPassword ? "text" : "password";
+
+  button.textContent = showPassword ? "🙈" : "👁️";
+  button.setAttribute(
+    "aria-label",
+    showPassword ? "Sembunyikan password" : "Lihat password"
+  );
+  button.setAttribute("aria-pressed", String(showPassword));
 }
 </script></body></html>
