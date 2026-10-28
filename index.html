@@ -58,7 +58,23 @@
   outline: 2px solid #82f0df;
   outline-offset: 1px;
 }
+.resident-avatar {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  background: #10374b;
+  border: 2px solid #82f0df;
+  border-radius: 24px;
+  margin: 12px 0;
+  box-shadow: 0 8px 24px #0003;
+}
 
+.avatar-preview {
+  transition: background-color 0.2s ease;
+}
 </style></head><body>
 <header><div><b>≈ SAMUDRA CITY</b><small>DUNIA PULAU VIRTUAL</small></div><div><button onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">Peta</button> <button onclick="document.getElementById('resident-account').scrollIntoView({behavior:'smooth'})">Akun Penduduk</button></div></header>
 <main><section class="hero"><div><div class="kicker">✦ DUNIA BARU MENANTI</div><h1>Lautan luas.<br>Pulau penuh cerita.</h1><p>Jelajahi kota virtual mungil di tengah samudra biru. Temukan permukiman, pulau tropis, mercusuar, dan pelabuhan dalam peta interaktif.</p></div></section>
@@ -132,7 +148,11 @@
     <span style="color:#82f0df;font-size:11px;letter-spacing:1px">
       PROFIL PENDUDUK
     </span>
-
+<div id="resident-avatar"
+     class="resident-avatar"
+     aria-label="Avatar penduduk">
+  🧑🏻‍🚀
+</div>
     <h3 id="profile-name" style="margin:5px 0">Penduduk</h3>
     <p id="profile-email" class="form-note"></p>
     <p id="profile-id" class="form-note"></p>
