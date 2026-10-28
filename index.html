@@ -192,7 +192,7 @@
     Gunakan email dan password yang didaftarkan.
   </p>
 </form>
-
+  </div>
 
 <div id="profile-panel" hidden class="profile-panel">
   <div>
@@ -203,7 +203,8 @@
      class="resident-avatar"
      aria-label="Avatar penduduk">
   🧑🏻‍🚀
-  
+</div>
+
 <div id="avatar-customizer" class="avatar-customizer">
   <h3>🎨 Kustomisasi Karakter</h3>
   <p class="form-note">Buat karakter khasmu sebagai warga Samudra City.</p>
@@ -252,7 +253,6 @@
   <p id="avatar-message" class="form-note" role="status"></p>
 </div>
 
-</div>
     <h3 id="profile-name" style="margin:5px 0">Penduduk</h3>
     <p id="profile-email" class="form-note"></p>
     <p id="profile-id" class="form-note"></p>
@@ -339,7 +339,7 @@ let supabaseClient = null;
 let currentResidentSession = null;
 function showAuthMessage(message, isError=false){authMessage.textContent=message;authMessage.style.color=isError?'#ffb4a8':'#bffff0';}
 function setBusy(form,busy){form.querySelectorAll('button').forEach(b=>{b.disabled=busy;b.style.opacity=busy?'.65':'1';});}
-function showSignedOut(){authStatus.textContent='Belum masuk';authForms.hidden=false;profilePanel.hidden=true;}
+function showSignedOut(){currentResidentSession=null;authStatus.textContent='Belum masuk';authForms.hidden=false;profilePanel.hidden=true;document.getElementById('edit-profile-form').hidden=true;}
 
 async function refreshResident(session) {
   if (!session) {
@@ -349,58 +349,43 @@ async function refreshResident(session) {
   }
 
   currentResidentSession = session;
-
   authStatus.textContent = 'Sudah masuk';
   authForms.hidden = true;
   profilePanel.hidden = false;
 
-  document.getElementById('profile-email').textContent =
-    session.user.email || '';
-
-  document.getElementById('profile-id').textContent =
-    'ID Penduduk: ' + session.user.id;
+  document.getElementById('profile-email').textContent = session.user.email || '';
+  document.getElementById('profile-id').textContent = 'ID Penduduk: ' + session.user.id;
 
   const { data, error } = await supabaseClient
     .from('profiles')
-    ..select(
-  'display_name, username, avatar_emoji, avatar_color, avatar_accessory'
-)
+    .select('display_name, username, avatar_emoji, avatar_color, avatar_accessory')
     .eq('id', session.user.id)
     .maybeSingle();
-  
 
   if (error) {
     showAuthMessage('Profil gagal dibaca: ' + error.message, true);
     return;
   }
 
-const avatarEmoji = data?.avatar_emoji || '🧑🏻‍🚀';
-const avatarColor = data?.avatar_color || '#10374b';
-const avatarAccessory = data?.avatar_accessory || 'none';
+  const avatarEmoji = data?.avatar_emoji || '🧑🏻‍🚀';
+  const avatarColor = data?.avatar_color || '#10374b';
+  const avatarAccessory = data?.avatar_accessory || 'none';
+  const avatarText = avatarEmoji + (avatarAccessory === 'none' ? '' : avatarAccessory);
 
-document.getElementById('resident-avatar').textContent =
-  avatarEmoji + (avatarAccessory === 'none' ? '' : avatarAccessory);
+  const residentAvatar = document.getElementById('resident-avatar');
+  residentAvatar.textContent = avatarText;
+  residentAvatar.style.backgroundColor = avatarColor;
 
-document.getElementById('resident-avatar').style.backgroundColor =
-  avatarColor;
+  document.getElementById('avatar-emoji').value = avatarEmoji;
+  document.getElementById('avatar-color').value = avatarColor;
+  document.getElementById('avatar-accessory').value = avatarAccessory;
+  updateAvatarPreview();
 
-document.getElementById('avatar-emoji').value = avatarEmoji;
-document.getElementById('avatar-color').value = avatarColor;
-document.getElementById('avatar-accessory').value = avatarAccessory;
-
-updateAvatarPreview();
-
-  const name = data?.display_name ||
-    session.user.user_metadata?.display_name ||
-    'Penduduk Baru';
-
+  const name = data?.display_name || session.user.user_metadata?.display_name || 'Penduduk Baru';
   document.getElementById('profile-name').textContent = name;
-  document.getElementById('profile-username').textContent =
-    data?.username ? '@' + data.username : 'Username belum diatur';
-
+  document.getElementById('profile-username').textContent = data?.username ? '@' + data.username : 'Username belum diatur';
   document.getElementById('edit-profile-name').value = name;
-  document.getElementById('edit-profile-username').value =
-    data?.username || '';
+  document.getElementById('edit-profile-username').value = data?.username || '';
 
   showAuthMessage('Selamat datang di Samudra City!');
 }
