@@ -155,8 +155,20 @@
 #profile-panel>.profile-actions button{white-space:nowrap}
 @media(max-width:720px){#profile-panel{grid-template-columns:minmax(0,1fr);padding:14px}#profile-panel>div:first-child{width:100%;grid-template-columns:76px minmax(0,1fr);column-gap:12px}#resident-avatar{width:72px;height:72px;font-size:38px}#profile-panel>.profile-actions{flex-direction:row;flex-wrap:wrap;padding-top:0}#avatar-customizer{grid-template-columns:minmax(0,1fr);grid-template-rows:auto}#avatar-customizer h3,#avatar-customizer>p.form-note:first-of-type,#avatar-customizer .avatar-preview,#avatar-customizer #save-avatar-button,#avatar-customizer #avatar-message,#avatar-customizer label,#avatar-customizer select,#avatar-customizer>p.form-note:nth-of-type(2){grid-column:1;grid-row:auto}}
 @media(max-width:420px){#profile-panel>div:first-child{grid-template-columns:64px minmax(0,1fr);column-gap:10px}#resident-avatar{width:60px;height:60px;font-size:32px;border-radius:16px}#profile-name{font-size:17px}#profile-email,#profile-id{font-size:10px}}
-</style></head><body>
-<header><div><b>≈ SAMUDRA CITY</b><small>DUNIA PULAU VIRTUAL</small></div><div><button onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">Peta</button> <button onclick="document.getElementById('resident-account').scrollIntoView({behavior:'smooth'})">Akun Penduduk</button></div></header>
+
+a.nav-link{display:inline-block;text-decoration:none;cursor:pointer;border:1px solid #ffffff30;background:#ffffff10;color:#efffff;border-radius:10px;padding:9px 12px;font-size:13px}
+a.nav-link:hover{background:#ffffff1b}
+/* Pemisahan halaman Peta dan Akun Penduduk */
+body.city-page #resident-account{display:none!important}
+body.account-page .hero,body.account-page .layout,body.account-page .extras{display:none!important}
+body.account-page main{max-width:1000px;min-height:calc(100vh - 150px)}
+body.account-page #resident-account{margin:24px auto 18px!important}
+body.account-page .auth-grid{align-items:stretch}
+body.account-page .auth-form{min-height:100%}
+body.account-page footer{max-width:1000px;margin:auto;padding-left:3%;padding-right:3%}
+@media(max-width:600px){body.account-page main{padding:18px 4%}body.account-page #resident-account{margin-top:12px!important}}
+</style></head><body class="city-page">
+<header><div><b>≈ SAMUDRA CITY</b><small>DUNIA PULAU VIRTUAL</small></div><div><a class="nav-link" href="index.html#map">Peta</a> <a class="nav-link" href="akun.html">Akun Penduduk</a></div></header>
 <main><section class="hero"><div><div class="kicker">✦ DUNIA BARU MENANTI</div><h1>Lautan luas.<br>Pulau penuh cerita.</h1><p>Jelajahi kota virtual mungil di tengah samudra biru. Temukan permukiman, pulau tropis, mercusuar, dan pelabuhan dalam peta interaktif.</p></div></section>
 <section class="account card" id="resident-account" style="margin-bottom:16px">
   <div class="account-head"><div><div class="kicker">IDENTITAS KEPENDUDUKAN</div><h2 style="font-size:20px;margin:6px 0">Akun Penduduk Samudra City</h2><p style="color:#aacbd8;margin:0;font-size:13px;line-height:1.5">Daftar atau masuk untuk membuat profil penduduk yang tersimpan di database.</p></div><div id="auth-status" class="status-pill">Belum masuk</div></div>
