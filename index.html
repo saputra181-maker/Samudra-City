@@ -39,6 +39,26 @@
   border-radius: 6px;
 }
 
+.profile-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#edit-profile-form {
+  margin-top: 12px;
+}
+
+#edit-profile-form[hidden] {
+  display: none !important;
+}
+
+#edit-profile-form input:focus {
+  outline: 2px solid #82f0df;
+  outline-offset: 1px;
+}
+
 </style></head><body>
 <header><div><b>≈ SAMUDRA CITY</b><small>DUNIA PULAU VIRTUAL</small></div><div><button onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">Peta</button> <button onclick="document.getElementById('resident-account').scrollIntoView({behavior:'smooth'})">Akun Penduduk</button></div></header>
 <main><section class="hero"><div><div class="kicker">✦ DUNIA BARU MENANTI</div><h1>Lautan luas.<br>Pulau penuh cerita.</h1><p>Jelajahi kota virtual mungil di tengah samudra biru. Temukan permukiman, pulau tropis, mercusuar, dan pelabuhan dalam peta interaktif.</p></div></section>
@@ -106,7 +126,67 @@
   </p>
 </form>
 
-  <div id="profile-panel" hidden class="profile-panel"><div><span style="color:#82f0df;font-size:11px;letter-spacing:1px">PROFIL PENDUDUK</span><h3 id="profile-name" style="margin:5px 0">Penduduk</h3><p id="profile-email" class="form-note"></p><p id="profile-id" class="form-note"></p></div><button id="logout-button" type="button">Keluar</button></div>
+
+<div id="profile-panel" hidden class="profile-panel">
+  <div>
+    <span style="color:#82f0df;font-size:11px;letter-spacing:1px">
+      PROFIL PENDUDUK
+    </span>
+
+    <h3 id="profile-name" style="margin:5px 0">Penduduk</h3>
+    <p id="profile-email" class="form-note"></p>
+    <p id="profile-id" class="form-note"></p>
+    <p id="profile-username" class="form-note"></p>
+  </div>
+
+  <div class="profile-actions">
+    <button id="edit-profile-button" type="button">
+      ✏️ Edit Profil
+    </button>
+
+    <button id="logout-button" type="button">
+      Keluar
+    </button>
+  </div>
+</div>
+
+  <form id="edit-profile-form" class="auth-form" hidden>
+  <h3>✏️ Edit Profil Penduduk</h3>
+
+  <label>
+    Nama penduduk
+    <input
+      id="edit-profile-name"
+      type="text"
+      maxlength="60"
+      required
+      placeholder="Nama penduduk"
+    >
+  </label>
+
+  <label>
+    Username
+    <input
+      id="edit-profile-username"
+      type="text"
+      minlength="3"
+      maxlength="20"
+      pattern="[A-Za-z0-9_.-]{3,20}"
+      required
+      placeholder="contoh: saputra181"
+    >
+  </label>
+
+  <p class="form-note">
+    Username hanya boleh berisi huruf, angka, titik, garis bawah, atau tanda hubung.
+  </p>
+
+  <div class="profile-actions">
+    <button type="button" id="cancel-edit-profile">Batal</button>
+    <button type="submit" class="primary">Simpan Perubahan</button>
+  </div>
+</form>
+
   <p id="auth-message" role="status" aria-live="polite" class="auth-message">Sistem akun terhubung ke Supabase setelah kunci publik dipasang.</p>
 </section>
 <section class="layout"><div class="map" id="map"><span class="label l1">SAMUDRA BIRU</span><span class="label l2">LAUT LEPAS</span><span class="label l3">PERAIRAN SELATAN</span><div class="controls"><button onclick="zoom(1.15)">＋</button><button onclick="zoom(.87)">−</button><button onclick="reset()">⌂</button></div>
@@ -136,24 +216,135 @@ const authStatus = document.getElementById('auth-status');
 const authForms = document.getElementById('auth-forms');
 const profilePanel = document.getElementById('profile-panel');
 let supabaseClient = null;
+let currentResidentSession = null;
 function showAuthMessage(message, isError=false){authMessage.textContent=message;authMessage.style.color=isError?'#ffb4a8':'#bffff0';}
 function setBusy(form,busy){form.querySelectorAll('button').forEach(b=>{b.disabled=busy;b.style.opacity=busy?'.65':'1';});}
 function showSignedOut(){authStatus.textContent='Belum masuk';authForms.hidden=false;profilePanel.hidden=true;}
-async function refreshResident(session){
-  if(!session){showSignedOut();return;}
-  authStatus.textContent='Sudah masuk';authForms.hidden=true;profilePanel.hidden=false;
-  document.getElementById('profile-email').textContent=session.user.email||'';
-  document.getElementById('profile-id').textContent='ID Penduduk: '+session.user.id;
-  const {data,error}=await supabaseClient.from('profiles').select('display_name,created_at').eq('id',session.user.id).maybeSingle();
-  if(error){showAuthMessage('Login berhasil, tetapi profil belum bisa dibaca. Periksa tabel profiles dan aturan RLS. '+error.message,true);document.getElementById('profile-name').textContent=session.user.user_metadata?.display_name||'Penduduk Baru';return;}
-  document.getElementById('profile-name').textContent=data?.display_name||session.user.user_metadata?.display_name||'Penduduk Baru';
-  showAuthMessage('Selamat datang di Samudra City! Profil penduduk tersimpan di database.');
+
+async function refreshResident(session) {
+  if (!session) {
+    currentResidentSession = null;
+    showSignedOut();
+    return;
+  }
+
+  currentResidentSession = session;
+
+  authStatus.textContent = 'Sudah masuk';
+  authForms.hidden = true;
+  profilePanel.hidden = false;
+
+  document.getElementById('profile-email').textContent =
+    session.user.email || '';
+
+  document.getElementById('profile-id').textContent =
+    'ID Penduduk: ' + session.user.id;
+
+  const { data, error } = await supabaseClient
+    .from('profiles')
+    .select('display_name, username')
+    .eq('id', session.user.id)
+    .maybeSingle();
+
+  if (error) {
+    showAuthMessage('Profil gagal dibaca: ' + error.message, true);
+    return;
+  }
+
+  const name = data?.display_name ||
+    session.user.user_metadata?.display_name ||
+    'Penduduk Baru';
+
+  document.getElementById('profile-name').textContent = name;
+  document.getElementById('profile-username').textContent =
+    data?.username ? '@' + data.username : 'Username belum diatur';
+
+  document.getElementById('edit-profile-name').value = name;
+  document.getElementById('edit-profile-username').value =
+    data?.username || '';
+
+  showAuthMessage('Selamat datang di Samudra City!');
 }
+
 if(!window.supabase){showAuthMessage('Library koneksi belum termuat. Periksa koneksi internet lalu muat ulang halaman.',true);}
 else if(SUPABASE_PUBLISHABLE_KEY==='PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE'){
   showAuthMessage('Belum terhubung: buka file index.html dan ganti PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE dengan Publishable key Supabase milikmu.');
 }else{
   supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+  
+document.getElementById('edit-profile-button')
+  .addEventListener('click', () => {
+    if (!currentResidentSession) return;
+
+    document.getElementById('edit-profile-form').hidden = false;
+  });
+
+document.getElementById('cancel-edit-profile')
+  .addEventListener('click', () => {
+    document.getElementById('edit-profile-form').hidden = true;
+  });
+
+document.getElementById('edit-profile-form')
+  .addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const session = currentResidentSession;
+    if (!session) return;
+
+    const name = document.getElementById('edit-profile-name')
+      .value.trim();
+
+    const username = document.getElementById('edit-profile-username')
+      .value.trim().toLowerCase();
+
+    if (!name || !/^[a-z0-9_.-]{3,20}$/.test(username)) {
+      showAuthMessage(
+        'Nama wajib diisi. Username harus 3–20 karakter: huruf, angka, titik, _ atau -.',
+        true
+      );
+      return;
+    }
+
+    const form = document.getElementById('edit-profile-form');
+    const saveButton = form.querySelector('button[type="submit"]');
+    saveButton.disabled = true;
+    saveButton.textContent = 'Menyimpan...';
+
+    try {
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .update({
+          display_name: name,
+          username: username
+        })
+        .eq('id', session.user.id)
+        .select('id')
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!data) {
+        throw new Error(
+          'Profil tidak ditemukan atau akses ditolak oleh aturan RLS.'
+        );
+      }
+
+      await refreshResident(session);
+      form.hidden = true;
+      showAuthMessage('Profil berhasil disimpan!');
+
+    } catch (error) {
+      showAuthMessage(
+        error.code === '23505'
+          ? 'Username sudah digunakan. Silakan pilih yang lain.'
+          : 'Gagal menyimpan profil: ' + error.message,
+        true
+      );
+    } finally {
+      saveButton.disabled = false;
+      saveButton.textContent = 'Simpan Perubahan';
+    }
+  });
+
   document.getElementById('signup-form').addEventListener('submit',async e=>{
     e.preventDefault();const form=e.currentTarget;setBusy(form,true);
     const display_name=document.getElementById('signup-name').value.trim();const email=document.getElementById('signup-email').value.trim();const password=document.getElementById('signup-password').value;
