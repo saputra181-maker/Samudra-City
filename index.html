@@ -5,15 +5,107 @@
 
 .account-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.status-pill{border:1px solid #82f0df66;background:#82f0df12;color:#bffff0;border-radius:999px;padding:8px 12px;font-size:12px}.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.auth-form{border:1px solid #ffffff20;border-radius:13px;padding:14px;display:flex;flex-direction:column;gap:10px;background:#041d30}.auth-form h3{margin:0 0 4px;font-size:15px}.auth-form label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:#c5e4ed}.auth-form input{width:100%;background:#061b30;color:white;border:1px solid #4e91a5;border-radius:9px;padding:11px;font:inherit}.auth-form button{margin-top:3px}.form-note{font-size:11px;color:#aacbd8;line-height:1.5;margin:0}.auth-message{font-size:12px;color:#bffff0;margin:14px 0 0;line-height:1.5}.profile-panel{margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#ffffff09;border:1px solid #ffffff20;border-radius:12px;padding:14px}.profile-panel h3{font-size:18px}.profile-panel button{background:#ffffff12}.auth-form[hidden],.profile-panel[hidden]{display:none!important}
 @media(max-width:600px){.auth-grid{grid-template-columns:1fr}.account-head{align-items:flex-start}}
+  
+.password-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.password-wrap input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding-right: 48px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 19px;
+  padding: 6px;
+  line-height: 1;
+  color: inherit;
+}
+
+.toggle-password:focus-visible {
+  outline: 2px solid #2584ff;
+  border-radius: 6px;
+}
+
 </style></head><body>
 <header><div><b>≈ SAMUDRA CITY</b><small>DUNIA PULAU VIRTUAL</small></div><div><button onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">Peta</button> <button onclick="document.getElementById('resident-account').scrollIntoView({behavior:'smooth'})">Akun Penduduk</button></div></header>
 <main><section class="hero"><div><div class="kicker">✦ DUNIA BARU MENANTI</div><h1>Lautan luas.<br>Pulau penuh cerita.</h1><p>Jelajahi kota virtual mungil di tengah samudra biru. Temukan permukiman, pulau tropis, mercusuar, dan pelabuhan dalam peta interaktif.</p></div></section>
 <section class="account card" id="resident-account" style="margin-bottom:16px">
   <div class="account-head"><div><div class="kicker">IDENTITAS KEPENDUDUKAN</div><h2 style="font-size:20px;margin:6px 0">Akun Penduduk Samudra City</h2><p style="color:#aacbd8;margin:0;font-size:13px;line-height:1.5">Daftar atau masuk untuk membuat profil penduduk yang tersimpan di database.</p></div><div id="auth-status" class="status-pill">Belum masuk</div></div>
   <div id="auth-forms" class="auth-grid">
-    <form id="signup-form" class="auth-form"><h3>🪪 Daftar penduduk</h3><label>Nama penduduk<input id="signup-name" autocomplete="name" maxlength="60" required placeholder="Contoh: Nara Samudra"></label><label>Email<input id="signup-email" type="email" autocomplete="email" required placeholder="nama@email.com"></label><label>Password<input id="signup-password" type="password" autocomplete="new-password" minlength="8" required placeholder="Minimal 8 karakter"></label><button class="primary" type="submit">Buat akun</button><p class="form-note">Jika konfirmasi email aktif, cek kotak masuk email setelah mendaftar.</p></form>
-    <form id="login-form" class="auth-form"><h3>🔐 Login penduduk</h3><label>Email<input id="login-email" type="email" autocomplete="email" required placeholder="nama@email.com"></label><label>Password<input id="login-password" type="password" autocomplete="current-password" required placeholder="Password akun"></label><button class="primary" type="submit">Masuk</button><p class="form-note">Gunakan email dan password yang didaftarkan.</p></form>
-  </div>
+
+<form id="signup-form" class="auth-form">
+  <h3>🪪 Daftar penduduk</h3>
+
+  <label>Nama penduduk
+    <input id="signup-name" autocomplete="name"
+      maxlength="60" required
+      placeholder="Contoh: Nara Samudra">
+  </label>
+
+  <label>Email
+    <input id="signup-email" type="email"
+      autocomplete="email" required
+      placeholder="nama@email.com">
+  </label>
+
+  <label>Password
+    <span class="password-wrap">
+      <input id="signup-password" type="password"
+        autocomplete="new-password" minlength="8"
+        required placeholder="Minimal 8 karakter">
+      <button class="toggle-password" type="button"
+        aria-label="Lihat password"
+        aria-pressed="false"
+        onclick="togglePassword('signup-password', this)">👁️</button>
+    </span>
+  </label>
+
+  <button class="primary" type="submit">Buat akun</button>
+  <p class="form-note">
+    Jika konfirmasi email aktif, cek kotak masuk email setelah mendaftar.
+  </p>
+</form>
+
+<form id="login-form" class="auth-form">
+  <h3>🔐 Login penduduk</h3>
+
+  <label>Email
+    <input id="login-email" type="email"
+      autocomplete="email" required
+      placeholder="nama@email.com">
+  </label>
+
+  <label>Password
+    <span class="password-wrap">
+      <input id="login-password" type="password"
+        autocomplete="current-password" required
+        placeholder="Password akun">
+      <button class="toggle-password" type="button"
+        aria-label="Lihat password"
+        aria-pressed="false"
+        onclick="togglePassword('login-password', this)">👁️</button>
+    </span>
+  </label>
+
+  <button class="primary" type="submit">Masuk</button>
+  <p class="form-note">
+    Gunakan email dan password yang didaftarkan.
+  </p>
+</form>
+
   <div id="profile-panel" hidden class="profile-panel"><div><span style="color:#82f0df;font-size:11px;letter-spacing:1px">PROFIL PENDUDUK</span><h3 id="profile-name" style="margin:5px 0">Penduduk</h3><p id="profile-email" class="form-note"></p><p id="profile-id" class="form-note"></p></div><button id="logout-button" type="button">Keluar</button></div>
   <p id="auth-message" role="status" aria-live="polite" class="auth-message">Sistem akun terhubung ke Supabase setelah kunci publik dipasang.</p>
 </section>
