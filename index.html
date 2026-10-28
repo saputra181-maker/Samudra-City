@@ -126,6 +126,36 @@
   margin: 4px 0 10px;
 }
 
+
+/* Tata letak profil lebih ringkas dan menyamping */
+#profile-panel { align-items: flex-start; gap: 18px; }
+#profile-panel > div:first-child {
+  flex: 1 1 680px;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(250px, 320px) minmax(220px, 1fr);
+  grid-template-rows: auto auto auto auto auto;
+  align-items: start;
+  column-gap: 20px;
+  row-gap: 8px;
+}
+#profile-panel > div:first-child > span { grid-column: 1 / -1; }
+#resident-avatar { grid-column: 2; grid-row: 2; width: 82px; height: 82px; font-size: 44px; margin: 0 0 8px; }
+#avatar-customizer { grid-column: 1; grid-row: 2 / span 5; margin-top: 0; padding: 14px; }
+#profile-name { grid-column: 2; grid-row: 3; align-self: end; }
+#profile-email { grid-column: 2; grid-row: 4; overflow-wrap: anywhere; }
+#profile-id { grid-column: 2; grid-row: 5; overflow-wrap: anywhere; }
+#profile-username { grid-column: 2; grid-row: 6; overflow-wrap: anywhere; }
+#profile-panel > .profile-actions { flex: 0 0 auto; align-self: center; }
+@media (max-width: 720px) {
+  #profile-panel { display: flex; flex-direction: column; }
+  #profile-panel > div:first-child { width: 100%; grid-template-columns: minmax(0, 1fr); }
+  #profile-panel > div:first-child > span,
+  #resident-avatar, #avatar-customizer, #profile-name, #profile-email, #profile-id, #profile-username { grid-column: 1; grid-row: auto; }
+  #resident-avatar { margin-top: 4px; }
+  #profile-panel > .profile-actions { align-self: flex-start; }
+}
+
 </style></head><body>
 <header><div><b>≈ SAMUDRA CITY</b><small>DUNIA PULAU VIRTUAL</small></div><div><button onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">Peta</button> <button onclick="document.getElementById('resident-account').scrollIntoView({behavior:'smooth'})">Akun Penduduk</button></div></header>
 <main><section class="hero"><div><div class="kicker">✦ DUNIA BARU MENANTI</div><h1>Lautan luas.<br>Pulau penuh cerita.</h1><p>Jelajahi kota virtual mungil di tengah samudra biru. Temukan permukiman, pulau tropis, mercusuar, dan pelabuhan dalam peta interaktif.</p></div></section>
