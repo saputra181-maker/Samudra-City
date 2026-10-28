@@ -75,6 +75,57 @@
 .avatar-preview {
   transition: background-color 0.2s ease;
 }
+  
+.avatar-customizer {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #ffffff20;
+  border-radius: 14px;
+  background: #041d30;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.avatar-customizer h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.avatar-customizer label {
+  color: #c5e4ed;
+  font-size: 12px;
+}
+
+.avatar-customizer select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #4e91a5;
+  border-radius: 9px;
+  background: #061b30;
+  color: white;
+  font: inherit;
+}
+
+.avatar-customizer button {
+  padding: 11px;
+  border: 0;
+  border-radius: 9px;
+  background: #82f0df;
+  color: #062536;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.avatar-customizer button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.avatar-preview {
+  margin: 4px 0 10px;
+}
+
 </style></head><body>
 <header><div><b>≈ SAMUDRA CITY</b><small>DUNIA PULAU VIRTUAL</small></div><div><button onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">Peta</button> <button onclick="document.getElementById('resident-account').scrollIntoView({behavior:'smooth'})">Akun Penduduk</button></div></header>
 <main><section class="hero"><div><div class="kicker">✦ DUNIA BARU MENANTI</div><h1>Lautan luas.<br>Pulau penuh cerita.</h1><p>Jelajahi kota virtual mungil di tengah samudra biru. Temukan permukiman, pulau tropis, mercusuar, dan pelabuhan dalam peta interaktif.</p></div></section>
@@ -152,6 +203,55 @@
      class="resident-avatar"
      aria-label="Avatar penduduk">
   🧑🏻‍🚀
+  
+<div id="avatar-customizer" class="avatar-customizer">
+  <h3>🎨 Kustomisasi Karakter</h3>
+  <p class="form-note">Buat karakter khasmu sebagai warga Samudra City.</p>
+
+  <label for="avatar-emoji">Pilih karakter</label>
+  <select id="avatar-emoji">
+    <option value="🧑🏻‍🚀">Astronaut</option>
+    <option value="🧑🏻‍🎨">Seniman pulau</option>
+    <option value="🧑🏽‍🚣">Penjelajah laut</option>
+    <option value="🧑🏻‍✈️">Kapten kapal</option>
+    <option value="🧑🏽‍🔬">Ilmuwan laut</option>
+    <option value="🧑🏻‍🌾">Petani pulau</option>
+    <option value="🧑🏽‍💻">Teknisi kota</option>
+    <option value="🧑🏻‍🎤">Musisi kota</option>
+  </select>
+
+  <label for="avatar-color">Pilih warna latar</label>
+  <select id="avatar-color">
+    <option value="#10374b">Biru samudra</option>
+    <option value="#245747">Hijau pulau</option>
+    <option value="#70452f">Cokelat pasir</option>
+    <option value="#633b78">Ungu senja</option>
+    <option value="#873e58">Merah karang</option>
+    <option value="#34415e">Biru malam</option>
+  </select>
+
+  <label for="avatar-accessory">Pilih aksesori</label>
+  <select id="avatar-accessory">
+    <option value="none">Tanpa aksesori</option>
+    <option value="🕶️">Kacamata hitam</option>
+    <option value="🧢">Topi</option>
+    <option value="👑">Mahkota</option>
+    <option value="🎧">Headphone</option>
+    <option value="🌺">Bunga tropis</option>
+    <option value="⚓">Jangkar</option>
+  </select>
+
+  <p class="form-note">Pratinjau:</p>
+  <div id="avatar-preview" class="resident-avatar avatar-preview">
+    🧑🏻‍🚀
+  </div>
+
+  <button type="button" id="save-avatar-button" class="primary">
+    💾 Simpan Avatar
+  </button>
+  <p id="avatar-message" class="form-note" role="status"></p>
+</div>
+
 </div>
     <h3 id="profile-name" style="margin:5px 0">Penduduk</h3>
     <p id="profile-email" class="form-note"></p>
@@ -262,14 +362,33 @@ async function refreshResident(session) {
 
   const { data, error } = await supabaseClient
     .from('profiles')
-    .select('display_name, username')
+    ..select(
+  'display_name, username, avatar_emoji, avatar_color, avatar_accessory'
+)
     .eq('id', session.user.id)
     .maybeSingle();
+  
 
   if (error) {
     showAuthMessage('Profil gagal dibaca: ' + error.message, true);
     return;
   }
+
+const avatarEmoji = data?.avatar_emoji || '🧑🏻‍🚀';
+const avatarColor = data?.avatar_color || '#10374b';
+const avatarAccessory = data?.avatar_accessory || 'none';
+
+document.getElementById('resident-avatar').textContent =
+  avatarEmoji + (avatarAccessory === 'none' ? '' : avatarAccessory);
+
+document.getElementById('resident-avatar').style.backgroundColor =
+  avatarColor;
+
+document.getElementById('avatar-emoji').value = avatarEmoji;
+document.getElementById('avatar-color').value = avatarColor;
+document.getElementById('avatar-accessory').value = avatarAccessory;
+
+updateAvatarPreview();
 
   const name = data?.display_name ||
     session.user.user_metadata?.display_name ||
@@ -285,6 +404,73 @@ async function refreshResident(session) {
 
   showAuthMessage('Selamat datang di Samudra City!');
 }
+
+function updateAvatarPreview() {
+  const emoji = document.getElementById('avatar-emoji').value;
+  const color = document.getElementById('avatar-color').value;
+  const accessory = document.getElementById('avatar-accessory').value;
+
+  const preview = document.getElementById('avatar-preview');
+  preview.textContent =
+    emoji + (accessory === 'none' ? '' : accessory);
+  preview.style.backgroundColor = color;
+}
+
+['avatar-emoji', 'avatar-color', 'avatar-accessory'].forEach(id => {
+  document.getElementById(id).addEventListener('change', updateAvatarPreview);
+});
+
+document.getElementById('save-avatar-button')
+  .addEventListener('click', async () => {
+    const session = currentResidentSession;
+    const message = document.getElementById('avatar-message');
+    const button = document.getElementById('save-avatar-button');
+
+    if (!session) {
+      message.textContent = 'Login terlebih dahulu untuk menyimpan avatar.';
+      return;
+    }
+
+    const avatarEmoji = document.getElementById('avatar-emoji').value;
+    const avatarColor = document.getElementById('avatar-color').value;
+    const avatarAccessory =
+      document.getElementById('avatar-accessory').value;
+
+    button.disabled = true;
+    message.textContent = 'Menyimpan avatar...';
+
+    try {
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .update({
+          avatar_emoji: avatarEmoji,
+          avatar_color: avatarColor,
+          avatar_accessory: avatarAccessory
+        })
+        .eq('id', session.user.id)
+        .select('id')
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (!data) {
+        throw new Error(
+          'Profil tidak ditemukan atau izin update RLS belum benar.'
+        );
+      }
+
+      const residentAvatar = document.getElementById('resident-avatar');
+      residentAvatar.textContent =
+        avatarEmoji + (avatarAccessory === 'none' ? '' : avatarAccessory);
+      residentAvatar.style.backgroundColor = avatarColor;
+
+      message.textContent = 'Avatar berhasil disimpan!';
+    } catch (error) {
+      message.textContent = 'Gagal menyimpan: ' + error.message;
+    } finally {
+      button.disabled = false;
+    }
+  });
 
 if(!window.supabase){showAuthMessage('Library koneksi belum termuat. Periksa koneksi internet lalu muat ulang halaman.',true);}
 else if(SUPABASE_PUBLISHABLE_KEY==='PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE'){
